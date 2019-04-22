@@ -6,6 +6,7 @@ public class SimplePanel extends JPanel {
 	JButton b;
 	JLabel l;
 	int num;
+	Thread t;
 
 	public SimplePanel() {
 		b = new JButton("Press Me");
@@ -15,17 +16,8 @@ public class SimplePanel extends JPanel {
 		b.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				for (num = 0; num <= 10; num++){
-					l.setText(Integer.toString(num));
-					l.repaint();
-
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
-				}
+				t = new Thread(new Updator());
+				t.start();
 
 			}
 		});
@@ -35,4 +27,21 @@ public class SimplePanel extends JPanel {
 
 	}
 
+	private class Updator implements Runnable {
+		@Override
+		public void run() {
+			for (num = 0; num <= 10; num++) {
+				l.setText(Integer.toString(num));
+				l.repaint();
+
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+
+		}
+
+	}
 }
